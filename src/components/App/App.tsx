@@ -1,11 +1,11 @@
 import { Toaster, toast } from "react-hot-toast";
-import MovieModal from "../MovieModal/MovieModal";
-import SearchBar from "../SearchBar/SearchBar";
-import Loader from "../Loader/Loader";
-import ErrorMessage from "../ErrorMessage/ErrorMessage";
-import MovieGrid from "../MovieGrid/MovieGrid";
-import { fetchMovies } from "../../services/movieService";
-import type { Movie } from "../../types/movie";
+import Modal from "../Modal/Modal";
+import SearchBox from "../SearchBox/SearchBox";
+import Loader from "../NoteForm/NoteForm";
+import ErrorMessage from "../NoteList/NoteList";
+import MovieGrid from "../Pagination/Pagination";
+import { fetchMovies } from "../../services/noteService";
+import type { Movie } from "../../types/note";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import css from "./App.module.css";
 import ReactPaginateModule from "react-paginate";
