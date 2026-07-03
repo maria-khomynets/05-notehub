@@ -1,19 +1,13 @@
-import { deleteNote, fetchNotes, queryKey } from "../../services/noteService";
+import { deleteNote, queryKey } from "../../services/noteService";
 import css from "./NoteList.module.css";
-
-import {
-  useQuery,
-  useMutation,
-  QueryClient,
-  useQueryClient,
-} from "@tanstack/react-query";
-
-export default function NoteList() {
+import type { Note } from "../../types/note";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+interface NoteListProps {
+  notes: Note[];
+}
+export default function NoteList({ notes }: NoteListProps) {
   const queryClient = useQueryClient();
-  const { data, error, isLoading, isError, isSuccess } = useQuery({
-    queryKey: [queryKey],
-    queryFn: fetchNotes,
-  });
+
   const mutation = useMutation({
     mutationFn: deleteNote,
     onSuccess: () => {
@@ -26,7 +20,7 @@ export default function NoteList() {
 
   return (
     <ul className={css.list}>
-      {res.data?.map((note) => (
+      {notes.map((note) => (
         <li key={note.id} className={css.listItem}>
           <h2 className={css.title}>{note.title}</h2>
           <p className={css.content}>{note.content}</p>
