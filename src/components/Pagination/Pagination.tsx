@@ -2,9 +2,11 @@ import ReactPaginateModule from "react-paginate";
 import type { ReactPaginateProps } from "react-paginate";
 import type { ComponentType } from "react";
 import css from "./Pagination.module.css";
-
+// Оголошуємо додатковий тип, який описує те, що ми імпортували.
+// Це об’єкт форми { default: компонент }.
 type ModuleWithDefault<T> = { default: T };
-
+// У змінну отримуємо значення з властивості default.
+// За допомогою as додаємо всю оригінальну типізацію ReactPaginateProps.
 const ReactPaginate = (
   ReactPaginateModule as unknown as ModuleWithDefault<
     ComponentType<ReactPaginateProps>

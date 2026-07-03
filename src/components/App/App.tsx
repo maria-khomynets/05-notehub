@@ -3,13 +3,14 @@ import NoteList from "../NoteList/NoteList";
 import SearchBox from "../SearchBox/SearchBox";
 import { useDebouncedCallback } from "use-debounce";
 import css from "./App.module.css";
-import { fetchNotes } from "../../services/noteService";
-import { useState, useEffect } from "react";
+import { fetchNotes, queryKey } from "../../services/noteService";
+import { useState } from "react";
 import Modal from "../Modal/Modal";
 import NoteForm from "../NoteForm/NoteForm";
-import toast, { Toaster } from "react-hot-toast";
+
 import Loader from "../Loader/Loader";
 import Pagination from "../Pagination/Pagination";
+import { Toaster } from "react-hot-toast";
 export default function App() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [search, setSearch] = useState<string>("");
@@ -23,27 +24,17 @@ export default function App() {
     },
     1000,
   );
-  const { data, isLoading, isSuccess, isError, error } = useQuery({
-    queryKey: ["note", search, currentPage],
+  const { data, isLoading } = useQuery({
+    queryKey: [queryKey, search, currentPage], //пагінація
     queryFn: () => fetchNotes({ search: search, page: currentPage }),
     placeholderData: keepPreviousData,
   });
   const totalPages = data?.totalPages ?? 0;
-  useEffect(() => {
-    if (isSuccess === true && data.notes.length === 0) {
-      toast("No notes were found for your search.");
-    }
-  }, [isSuccess, data]);
 
-  useEffect(() => {
-    if (isError === true && error !== undefined) {
-      toast.error(error.message);
-    }
-  }, [isError, error]);
   return (
     <div className={css.app}>
       <header className={css.toolbar}>
-        <SearchBox onChange={handleSearch} />
+        <SearchBox onChange={handleSearch} value={search} />
         {totalPages > 1 && (
           <Pagination
             totalPages={totalPages}

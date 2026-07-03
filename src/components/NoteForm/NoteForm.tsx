@@ -2,9 +2,9 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import css from "./NoteForm.module.css";
 import { Formik, Form, Field, ErrorMessage, type FormikHelpers } from "formik";
 import { useId } from "react";
-import { createNote } from "../../services/noteService";
+import { createNote, queryKey } from "../../services/noteService";
 import * as Yup from "yup";
-import { queryKey } from "..//..//services/noteService";
+
 import type { CreateNote } from "../../types/note";
 interface NoteFormProps {
   onCancel: () => void;
@@ -35,6 +35,7 @@ export default function NoteForm({ onCancel, onSuccess }: NoteFormProps) {
     actions: FormikHelpers<CreateNote>,
   ) => {
     console.log("Order data:", values);
+    createMutation.mutate(values);
     actions.resetForm();
   };
   const fieldId = useId();
@@ -52,6 +53,7 @@ export default function NoteForm({ onCancel, onSuccess }: NoteFormProps) {
   const handleCancel = () => {
     onCancel();
   };
+
   return (
     <Formik
       validationSchema={NoteFormSchema}

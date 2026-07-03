@@ -13,15 +13,10 @@ interface FetchNotesParameters {
 }
 const perPage: number = 12;
 const notesToken = `Bearer ${import.meta.env.VITE_NOTEHUB_TOKEN}`;
-export async function fetchNotes({
-  search,
-  tag,
-  page,
-}: FetchNotesParameters): Promise<NotesHttpResponse> {
+export async function fetchNotes({ search, page }: FetchNotesParameters) {
   const parameters = {
     params: {
       search: search,
-      tag: tag,
       page: page,
       perPage: perPage,
     },
@@ -36,7 +31,7 @@ export async function fetchNotes({
   return response.data;
 }
 
-export async function createNote(note: CreateNote): Promise<Note> {
+export async function createNote(note: CreateNote) {
   const parameters = {
     headers: {
       Authorization: notesToken,
@@ -48,7 +43,7 @@ export async function createNote(note: CreateNote): Promise<Note> {
 
   return response.data;
 }
-export async function deleteNote(id: string): Promise<Note> {
+export async function deleteNote(id: string) {
   const parameters = {
     headers: {
       Authorization: notesToken,
