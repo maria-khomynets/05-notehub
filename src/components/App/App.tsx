@@ -17,13 +17,10 @@ export default function App() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-  const handleSearch = useDebouncedCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      setSearch(event.target.value);
-      setCurrentPage(1);
-    },
-    1000,
-  );
+
+  const handleSearch = useDebouncedCallback((search: string) => {
+    setSearch(search);
+  }, 1000);
   const { data, isLoading } = useQuery({
     queryKey: [queryKey, search, currentPage], //пагінація
     queryFn: () => fetchNotes({ search: search, page: currentPage }),
@@ -34,7 +31,7 @@ export default function App() {
   return (
     <div className={css.app}>
       <header className={css.toolbar}>
-        <SearchBox onChange={handleSearch} value={search} />
+        <SearchBox onChange={handleSearch} />
         {totalPages > 1 && (
           <Pagination
             totalPages={totalPages}
