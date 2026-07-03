@@ -4,24 +4,28 @@ import SearchBox from "../SearchBox/SearchBox";
 
 import css from "./App.module.css";
 import { createNote, queryKey } from "../../services/noteService";
+import { useState } from "react";
+import Modal from "../Modal/Modal";
+import NoteForm from "../NoteForm/NoteForm";
 export default function App() {
-  const queryClient = useQueryClient();
-  const createMutation = useMutation({
-    mutationFn: createNote,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [queryKey] });
-    },
-    onError: (error) => {
-      console.error(error);
-    },
-  });
+  const [isModalOpen, setIsMpdalOpen] = useState<boolean>(false);
+  const openModal = () => setIsMpdalOpen(true);
+  const closeModal = () => setIsMpdalOpen(false);
+
   return (
     <div className={css.app}>
       <header className={css.toolbar}>
         <SearchBox />
-        <button className={css.button}>Create note +</button>
+        <button onClick={openModal} className={css.button}>
+          Create note +
+        </button>
       </header>
       <NoteList />
+      {isModalOpen && (
+        <Modal onClose={closeModal}>
+          <NoteForm />
+        </Modal>
+      )}
       {/* Пагінація */}
     </div>
   );
