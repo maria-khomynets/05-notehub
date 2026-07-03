@@ -23,7 +23,7 @@ export default function App() {
       <NoteList />
       {isModalOpen && (
         <Modal onClose={closeModal}>
-          <NoteForm />
+          <NoteForm onCancel={closeModal} onSuccess={closeModal} />
         </Modal>
       )}
       {/* Пагінація */}

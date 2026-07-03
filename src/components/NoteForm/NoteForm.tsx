@@ -6,6 +6,10 @@ import { createNote } from "../../services/noteService";
 import * as Yup from "yup";
 import { queryKey } from "..//..//services/noteService";
 import type { CreateNote } from "../../types/note";
+interface NoteFormProps {
+  onCancel: () => void;
+  onSuccess: () => void;
+}
 const initialValues: CreateNote = {
   title: "",
   content: "",
@@ -25,7 +29,7 @@ const NoteFormSchema = Yup.object().shape({
     .oneOf(["Todo", "Work", "Personal", "Meeting", "Shopping"], "Invalid tag")
     .required("Select tag"),
 });
-export default function NoteForm() {
+export default function NoteForm({ onCancel, onSuccess }: NoteFormProps) {
   const handleSubmit = (
     values: CreateNote,
     actions: FormikHelpers<CreateNote>,
@@ -39,11 +43,15 @@ export default function NoteForm() {
     mutationFn: createNote,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [queryKey] });
+      onSuccess();
     },
     onError: (error) => {
       console.error(error);
     },
   });
+  const handleCancel = () => {
+    onCancel();
+  };
   return (
     <Formik
       validationSchema={NoteFormSchema}
@@ -92,7 +100,11 @@ export default function NoteForm() {
         </div>
 
         <div className={css.actions}>
-          <button type="button" className={css.cancelButton}>
+          <button
+            onClick={handleCancel}
+            type="button"
+            className={css.cancelButton}
+          >
             Cancel
           </button>
           <button type="submit" className={css.submitButton} disabled={false}>

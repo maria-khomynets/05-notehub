@@ -1,10 +1,21 @@
-//import axios from "axios";
-import mock from "../components/mock.json";
-import type { CreateNote } from "../types/note";
+import axios from "axios";
+import type { Note, CreateNote } from "../types/note";
 export const queryKey = "noteKey";
-export async function fetchNotes() {
-  return mock;
+axios.defaults.baseURL = "https://notehub-public.goit.study/api/";
+interface FetchNotesResponse {
+  notes: Note[];
+  totalPages: number;
 }
+const notesToken = `Bearer ${import.meta.env.VITE_NOTEHUB_TOKEN}`;
+export async function fetchNotes(search: string): Promise<FetchNotesResponse> {
+  const res = await axios.get<Note[]>("/notes", {
+    params: {
+      search,
+    },
+  });
+  return res.data;
+}
+
 export async function createNote({ title, content, tag }: CreateNote) {
   console.log(title, content, tag);
 }

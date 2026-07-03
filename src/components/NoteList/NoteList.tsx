@@ -26,7 +26,7 @@ export default function NoteList() {
 
   return (
     <ul className={css.list}>
-      {data?.map((note) => (
+      {res.data?.map((note) => (
         <li key={note.id} className={css.listItem}>
           <h2 className={css.title}>{note.title}</h2>
           <p className={css.content}>{note.content}</p>
