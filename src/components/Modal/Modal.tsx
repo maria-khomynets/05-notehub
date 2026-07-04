@@ -8,6 +8,11 @@ interface ModalProps {
 }
 
 export default function Modal({ onClose, children }: ModalProps) {
+  const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (event.target === event.currentTarget) {
+      onClose();
+    }
+  };
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -24,9 +29,14 @@ export default function Modal({ onClose, children }: ModalProps) {
     };
   }, [onClose]);
   return createPortal(
-    <div className={css.backdrop} role="dialog" aria-modal="true">
+    <div
+      className={css.backdrop}
+      role="dialog"
+      aria-modal="true"
+      onClick={handleBackdropClick}
+    >
       <div className={css.modal}>
-        <button type="button" className={css.closeBtn} onClick={onClose}>
+        <button type="button" onClick={onClose} className={css.closeBtn}>
           ×
         </button>
         {children}
